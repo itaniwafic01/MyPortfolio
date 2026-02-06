@@ -132,6 +132,10 @@ if (projectGrid) {
     `
     )
     .join("");
+
+  if (window.refreshReveals) {
+    window.refreshReveals();
+  }
 }
 
 const projectTemplate = document.querySelector("#project-template");

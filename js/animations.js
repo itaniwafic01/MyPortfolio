@@ -1,6 +1,4 @@
 // Lightweight scroll reveal using IntersectionObserver for performance.
-const revealItems = document.querySelectorAll(".reveal");
-
 const revealObserver = new IntersectionObserver(
   (entries, observer) => {
     entries.forEach((entry) => {
@@ -15,4 +13,13 @@ const revealObserver = new IntersectionObserver(
   }
 );
 
-revealItems.forEach((item) => revealObserver.observe(item));
+const observeReveals = () => {
+  const revealItems = document.querySelectorAll(".reveal:not(.is-visible)");
+  revealItems.forEach((item) => revealObserver.observe(item));
+};
+
+// Initial scan on load.
+observeReveals();
+
+// Allow dynamic content to trigger a refresh.
+window.refreshReveals = observeReveals;
