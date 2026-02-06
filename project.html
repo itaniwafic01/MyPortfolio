@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Details | Wafic Itani</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+        },
+      };
+    </script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="logo">Wafic Itani</div>
+        <nav class="nav-links">
+          <a data-transition href="index.html">Home</a>
+          <a data-transition href="projects.html">Projects</a>
+          <a data-transition href="about.html">About</a>
+          <a data-transition href="contact.html">Contact</a>
+        </nav>
+        <button class="nav-toggle" type="button">Menu</button>
+      </div>
+    </header>
+
+    <main id="project-template">
+      <section class="container project-hero reveal">
+        <p class="tagline">Project Detail</p>
+        <h1 data-project-title></h1>
+        <p data-project-summary></p>
+      </section>
+
+      <section class="section container reveal">
+        <h2>Recruiter Summary</h2>
+        <p class="lead" data-project-recruiter></p>
+        <div class="project-meta">
+          <div>
+            <strong>Engineering Problem</strong>
+            <p data-project-problem></p>
+          </div>
+          <div>
+            <strong>Tools Used</strong>
+            <p data-project-tools></p>
+          </div>
+          <div>
+            <strong>Outcome</strong>
+            <p data-project-outcome></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section container reveal">
+        <h2>Technical Details</h2>
+        <p class="lead">
+          Expand each section for mathematical models, simulations, and experimental notes.
+        </p>
+        <div id="technical-sections"></div>
+      </section>
+
+      <section class="section container reveal">
+        <h2>Next Steps</h2>
+        <p class="lead">
+          I can share additional CAD files, simulation logs, or lab notebooks on request.
+        </p>
+        <a class="button primary" data-transition href="contact.html">Contact Me</a>
+      </section>
+    </main>
+
+    <footer class="footer container">
+      Return to the <a data-transition href="projects.html">projects overview</a> for more systems.
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/projects.js"></script>
+  </body>
+</html>
