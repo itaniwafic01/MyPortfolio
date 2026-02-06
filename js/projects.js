@@ -1,6 +1,29 @@
 // Edit this single data object to add or update projects across the site.
 const projects = [
   {
+    id: "robotic-arm",
+    name: "6-Axis Industrial Robotic Arm",
+    summary:
+      "Heavy-duty robotic arm designed for factory environments with high load and temperature requirements.",
+    problem: "Design a 6-axis arm capable of 1000 N loads and operation up to 1000 K.",
+    tools: ["SolidWorks", "CAD", "Robotics"],
+    outcome: "Delivered a full CAD model and integrated elevator system for industrial workflows.",
+    recruiterSummary:
+      "Designed a robust multi-axis arm with clear manufacturing constraints and thermal considerations.",
+    technicalSections: [
+      {
+        title: "Structural Load",
+        content:
+          "Sized links and joints for high loads and thermal stress.\\n\\n\\\\( \\u03c3 = \\\\frac{F}{A} \\\\)\\n\\nVerified key components with safety factors tailored to 1000 N loading.",
+      },
+      {
+        title: "Thermal Envelope",
+        content:
+          "Material selection based on 1060 aluminum alloy properties.\\n\\n\\\\( \\u0394L = \\u03b1 L_0 \\u0394T \\\\)\\n\\nChecked thermal expansion to maintain joint tolerances.",
+      },
+    ],
+  },
+  {
     id: "enduravolt",
     name: "EnduraVolt",
     summary: "Energy-recovering suspension integrating regenerative damping to convert vibration into usable electrical power.",
