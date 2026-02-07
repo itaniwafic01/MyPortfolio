@@ -16,12 +16,12 @@ const projects = [
       {
         title: "Structural Load",
         content:
-          "Sized links and joints for high loads and thermal stress.\\n\\n\\\\( \\u03c3 = \\\\frac{F}{A} \\\\)\\n\\nVerified key components with safety factors tailored to 1000 N loading.",
+          "Sized links and joints for high loads and thermal stress.\n\n\\( \\u03c3 = \\frac{F}{A} \\)\n\nVerified key components with safety factors tailored to 1000 N loading.",
       },
       {
         title: "Thermal Envelope",
         content:
-          "Material selection based on 1060 aluminum alloy properties.\\n\\n\\\\( \\u0394L = \\u03b1 L_0 \\u0394T \\\\)\\n\\nChecked thermal expansion to maintain joint tolerances.",
+          "Material selection based on 1060 aluminum alloy properties.\n\n\\( \\u0394L = \\u03b1 L_0 \\u0394T \\)\n\nChecked thermal expansion to maintain joint tolerances.",
       },
     ],
   },
@@ -179,7 +179,6 @@ if (projectTemplate) {
         </button>
         <div class="tech-content" id="tech-${index}">
           <p>${section.content.replace(/\n/g, "<br>")}</p>
-          <div class="tagline">Figure/plot placeholder</div>
         </div>
       </div>
     `
