@@ -130,10 +130,6 @@ if (projectGrid) {
           <h3>${project.name}</h3>
           <p class="tagline">${project.problem}</p>
         </div>
-        <div>
-          <p><strong>Tools:</strong> ${project.tools.join(", ")}</p>
-          <p><strong>Outcome:</strong> ${project.outcome}</p>
-        </div>
         <a class="button secondary" data-transition href="project.html?id=${project.id}">View Details</a>
       </article>
     `
