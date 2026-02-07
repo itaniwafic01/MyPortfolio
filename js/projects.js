@@ -8,6 +8,8 @@ const projects = [
     problem: "Design a 6-axis arm capable of 1000 N loads and operation up to 1000 K.",
     tools: ["SolidWorks", "CAD", "Robotics"],
     outcome: "Delivered a full CAD model and integrated elevator system for industrial workflows.",
+    thumbnail: "assets/images/RA1.jpeg",
+    gallery: ["assets/images/RA1.jpeg", "assets/images/RA2.jpeg"],
     recruiterSummary:
       "Designed a robust multi-axis arm with clear manufacturing constraints and thermal considerations.",
     technicalSections: [
@@ -119,6 +121,11 @@ if (projectGrid) {
     .map(
       (project) => `
       <article class="card reveal">
+        ${
+          project.thumbnail
+            ? `<img class="card-thumb" src="${project.thumbnail}" alt="${project.name} thumbnail" />`
+            : ""
+        }
         <div>
           <h3>${project.name}</h3>
           <p class="tagline">${project.problem}</p>
@@ -151,6 +158,19 @@ if (projectTemplate) {
   projectTemplate.querySelector("[data-project-problem]").textContent = project.problem;
   projectTemplate.querySelector("[data-project-tools]").textContent = project.tools.join(", ");
   projectTemplate.querySelector("[data-project-outcome]").textContent = project.outcome;
+  const gallerySlot = projectTemplate.querySelector("[data-project-gallery]");
+  if (gallerySlot) {
+    if (project.gallery && project.gallery.length > 0) {
+      gallerySlot.innerHTML = project.gallery
+        .map(
+          (img) =>
+            `<img class="project-gallery-image" src="${img}" alt="${project.name} figure" />`
+        )
+        .join("");
+    } else {
+      gallerySlot.innerHTML = "";
+    }
+  }
 
   const techContainer = projectTemplate.querySelector("#technical-sections");
   techContainer.innerHTML = project.technicalSections
