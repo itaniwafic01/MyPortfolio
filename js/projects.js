@@ -16,12 +16,17 @@ const projects = [
       {
         title: "Structural Load",
         content:
-          "Sized links and joints for high loads and thermal stress.\n\n\\( \\u03c3 = \\frac{F}{A} \\)\n\nVerified key components with safety factors tailored to 1000 N loading.",
+          "Sized links and joints for high loads and thermal stress.\nVerified key components with safety factors tailored to 1000 N loading and 1000 K temperature.\nEvaluated end-effector deflection under full load to ensure positional error remained within acceptable tolerances for precision tasks.",
+      },
+      {
+        title: "Dynamic Analysis",
+        content:
+          "Joint limits and offsets were optimized to maximize reachable workspace while avoiding wrist singularities.\nComputed link inertias directly from SolidWorks and evaluated peak joint torques under maximum payload and acceleration profiles using rigid-body dynamics."
       },
       {
         title: "Thermal Envelope",
         content:
-          "Material selection based on 1060 aluminum alloy properties.\n\n\\( \\u0394L = \\u03b1 L_0 \\u0394T \\)\n\nChecked thermal expansion to maintain joint tolerances.",
+          "Material selection based on 1060 aluminum alloy properties.\nChecked thermal expansion to maintain joint tolerances.\nPerformed steady-state thermal analysis to ensure joint temperatures remained below material and lubricant limits under continuous operation.",
       },
     ],
   },
