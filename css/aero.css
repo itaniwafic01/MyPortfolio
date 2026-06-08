@@ -1,14 +1,13 @@
 /* ── Aero Stage: F1 animation embedded in homepage hero ── */
 
 .hero {
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
+  grid-template-columns: 1fr;
 }
 
 .aero-stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 7;
   overflow: hidden;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
@@ -248,8 +247,3 @@
   to { transform: rotate(360deg); }
 }
 
-@media (max-width: 860px) {
-  .hero {
-    grid-template-columns: 1fr;
-  }
-}
