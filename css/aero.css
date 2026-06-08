@@ -1,0 +1,254 @@
+/* ── Aero Stage: F1 animation embedded in homepage hero ── */
+
+.hero {
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.aero-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 4rem),
+    linear-gradient(145deg, #14171d, #070708 65%);
+}
+
+#flowCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pressure-field {
+  position: absolute;
+  width: 55%;
+  height: 55%;
+  right: 2%;
+  top: 22%;
+  opacity: var(--wake-opacity, 0.62);
+  filter: blur(18px);
+  background:
+    radial-gradient(ellipse at 30% 48%, rgba(225,6,0,0.72), transparent 55%),
+    radial-gradient(ellipse at 70% 52%, rgba(255,212,59,0.5), transparent 60%);
+  transition: opacity 380ms ease, transform 380ms ease;
+  pointer-events: none;
+}
+
+.aero-stage.drs-open .pressure-field {
+  opacity: 0.22;
+  transform: scaleX(0.58) translateX(4rem);
+}
+
+/* ── Car ── */
+.car {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: min(44rem, 86%);
+  height: min(14rem, 34vw);
+  transform: translate(-50%, -50%);
+}
+
+.floor, .nose, .sidepod, .cockpit, .halo,
+.front-wing, .rear-wing, .wheel {
+  position: absolute;
+}
+
+.floor {
+  left: 13%; bottom: 25%; width: 66%; height: 1.15rem;
+  background: linear-gradient(90deg, #06113f, #071a5f 62%, #d4141e 62% 100%);
+  clip-path: polygon(5% 0, 100% 18%, 94% 100%, 0 72%);
+}
+
+.nose {
+  left: 12%; bottom: 37%; width: 40%; height: 2.6rem;
+  background: linear-gradient(90deg, #071a5f 0 54%, #ffd400 54% 66%, #d4141e 66% 100%);
+  clip-path: polygon(0 42%, 88% 0, 100% 58%, 8% 100%);
+}
+
+.sidepod {
+  left: 43%; bottom: 34%; width: 25%; height: 4.5rem;
+  background: linear-gradient(135deg, #071a5f 0 58%, #122a8f 58% 76%, #ffd400 76% 86%, #d4141e 86% 100%);
+  clip-path: polygon(0 35%, 20% 0, 100% 24%, 82% 100%, 8% 86%);
+}
+
+.cockpit {
+  left: 47%; bottom: 61%; width: 12%; height: 3.2rem;
+  background: #101116;
+  border: 0.35rem solid #ffd400;
+  border-bottom: 0;
+  border-radius: 3rem 3rem 0 0;
+}
+
+.halo {
+  left: 45%; bottom: 72%; width: 17%; height: 3.2rem;
+  border: 0.42rem solid #ffd400;
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0;
+}
+
+.front-wing {
+  left: 2%; bottom: 31%; width: 20%; height: 1.5rem;
+  background: linear-gradient(90deg, #d4141e 0 48%, #ffd400 48% 62%, #071a5f 62% 100%);
+  clip-path: polygon(0 0, 100% 20%, 90% 100%, 7% 82%);
+}
+
+.rear-wing {
+  right: 4%; bottom: 45%; width: 17%; height: 8rem;
+}
+
+.rear-wing-svg {
+  position: absolute;
+  inset: -2.4rem -2rem -1rem -2.4rem;
+  width: calc(100% + 4.4rem);
+  height: calc(100% + 3.4rem);
+  overflow: visible;
+}
+
+.mainplane, .flap-airfoil { fill: #0d4ed6; }
+
+.mainplane {
+  filter: drop-shadow(0 0 10px rgba(13,78,214,0.35));
+}
+
+.endplate, .reference-line {
+  fill: none;
+  stroke: rgba(255,255,255,0.88);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.endplate { stroke-width: 4; }
+
+.reference-line {
+  opacity: 0.42;
+  stroke-width: 2.2;
+}
+
+.reference-line.upper { opacity: 0.28; }
+
+.flap-airfoil {
+  stroke: rgba(255,255,255,0.88);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.drs-flap {
+  transform-box: fill-box;
+  transform-origin: 96% 8%;
+  transform: rotate(0deg);
+  transition: transform 440ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.aero-stage.drs-open .drs-flap {
+  transform: rotate(32deg);
+}
+
+.wheel {
+  bottom: 3%; width: 7.6rem; aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #cfd5dd 0 17%, #15161a 18% 44%, #050505 45% 100%);
+  box-shadow: inset 0 0 0 0.55rem #2e333b;
+  animation: aero-spin 680ms linear infinite;
+}
+
+.wheel span {
+  position: absolute; inset: 26%;
+  border: 0.22rem dashed rgba(255,255,255,0.72);
+  border-radius: 50%;
+}
+
+.wheel.front { left: 20%; }
+.wheel.rear  { right: 20%; }
+
+/* ── Readout + DRS toggle ── */
+.stage-readout {
+  position: absolute;
+  left: 1rem; bottom: 1rem;
+  display: flex; align-items: center; gap: 0.55rem;
+  padding: 0.55rem 0.8rem;
+  background: rgba(0,0,0,0.52);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.78rem;
+}
+
+.status-dot {
+  width: 0.6rem; height: 0.6rem;
+  border-radius: 999px;
+  background: #e10600;
+  box-shadow: 0 0 12px #e10600;
+  flex-shrink: 0;
+}
+
+.aero-stage.drs-open .status-dot {
+  background: #00d4ff;
+  box-shadow: 0 0 12px #00d4ff;
+}
+
+/* DRS toggle button sits below the stage */
+.aero-drs-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.aero-drs-toggle:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(47,181,163,0.18);
+}
+
+.aero-drs-toggle .toggle-pip {
+  width: 28px; height: 16px;
+  border-radius: 999px;
+  background: #e10600;
+  position: relative;
+  transition: background 260ms ease;
+  flex-shrink: 0;
+}
+
+.aero-drs-toggle .toggle-pip::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 3px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 260ms ease;
+}
+
+.aero-drs-toggle.active .toggle-pip {
+  background: #00d4ff;
+}
+
+.aero-drs-toggle.active .toggle-pip::after {
+  transform: translateX(12px);
+}
+
+@keyframes aero-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+}

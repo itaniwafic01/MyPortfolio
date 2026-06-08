@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wafic Itani | Mechanical Engineering</title>
     <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/aero.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -37,10 +38,47 @@
             Focused on dynamics, vehicle dynamics, and the automotive industry. I integrate robotics and
             automation into disruptive automotive technology, blending simulation with hands-on prototyping.
           </p>
+          <div class="hero-actions">
+            <a class="button primary" data-transition href="projects.html">View Projects</a>
+            <a class="button secondary" data-transition href="contact.html">Contact Me</a>
+          </div>
         </div>
-        <div class="hero-actions">
-          <a class="button primary" data-transition href="projects.html">View Projects</a>
-          <a class="button secondary" data-transition href="contact.html">Contact Me</a>
+
+        <div>
+          <div class="aero-stage" data-aero-stage>
+            <canvas id="flowCanvas" aria-hidden="true"></canvas>
+            <div class="pressure-field" aria-hidden="true"></div>
+            <div class="car" aria-label="Animated Formula 1 car side profile">
+              <div class="front-wing"></div>
+              <div class="nose"></div>
+              <div class="halo"></div>
+              <div class="cockpit"></div>
+              <div class="sidepod"></div>
+              <div class="floor"></div>
+              <div class="rear-wing">
+                <svg class="rear-wing-svg" viewBox="0 0 220 180" role="img" aria-label="Rear wing with pivoting DRS flap">
+                  <path class="endplate" d="M50 42 L50 156"></path>
+                  <path class="endplate" d="M172 42 L172 156"></path>
+                  <path class="mainplane" d="M41 93 C58 102 92 97 126 89 C154 82 178 74 199 64 C171 89 137 107 96 115 C66 121 41 118 31 107 C22 97 26 87 41 93 Z"></path>
+                  <g class="drs-flap">
+                    <path class="flap-airfoil" d="M135 55 C154 39 183 21 207 10 C190 35 173 58 151 75 C139 84 129 80 129 70 C129 64 131 59 135 55 Z"></path>
+                  </g>
+                  <path class="reference-line" d="M66 152 L176 152"></path>
+                  <path class="reference-line upper" d="M165 74 L214 74"></path>
+                </svg>
+              </div>
+              <div class="wheel front"><span></span></div>
+              <div class="wheel rear"><span></span></div>
+            </div>
+            <div class="stage-readout">
+              <span class="status-dot"></span>
+              <span data-drs-label>DRS closed: high downforce, high wake drag</span>
+            </div>
+          </div>
+          <button class="aero-drs-toggle" data-drs-toggle type="button" aria-label="Toggle DRS configuration">
+            <span class="toggle-pip"></span>
+            <span class="toggle-label">DRS Closed</span>
+          </button>
         </div>
       </section>
 
@@ -94,5 +132,6 @@
 
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
+    <script src="js/aero.js"></script>
   </body>
 </html>
