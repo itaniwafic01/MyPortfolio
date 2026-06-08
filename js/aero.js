@@ -67,7 +67,7 @@
     if (drsOpen) return;
     const originX = width * 0.76;
     const originY = height * 0.48;
-    ctx.strokeStyle = "rgba(225, 6, 0, 0.34)";
+    ctx.strokeStyle = "rgba(200, 40, 20, 0.45)";
     ctx.lineWidth = 1.7;
     ctx.setLineDash([18, 12]);
     ctx.lineDashOffset = -flowTime * 3;
@@ -100,10 +100,10 @@
       const phase = i * 0.76;
       const warmLine = i > lineCount * 0.47;
       const color = drsOpen
-        ? `rgba(0, 212, 255, ${warmLine ? 0.58 : 0.44})`
+        ? `rgba(47, 181, 163, ${warmLine ? 0.75 : 0.55})`
         : warmLine
-          ? "rgba(255, 212, 59, 0.66)"
-          : "rgba(0, 212, 255, 0.46)";
+          ? "rgba(200, 80, 30, 0.6)"
+          : "rgba(31, 100, 180, 0.55)";
       drawStreamline(
         baseY, phase, color,
         warmLine ? 2.1 : 1.6,

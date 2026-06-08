@@ -14,8 +14,8 @@
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-md);
   background:
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 4rem),
-    linear-gradient(145deg, #14171d, #070708 65%);
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0 1px, transparent 1px 4rem),
+    linear-gradient(145deg, #f0ede7, #f6f4f0 65%);
 }
 
 #flowCanvas {
@@ -31,17 +31,17 @@
   height: 55%;
   right: 2%;
   top: 22%;
-  opacity: var(--wake-opacity, 0.62);
-  filter: blur(18px);
+  opacity: var(--wake-opacity, 0.38);
+  filter: blur(22px);
   background:
-    radial-gradient(ellipse at 30% 48%, rgba(225,6,0,0.72), transparent 55%),
-    radial-gradient(ellipse at 70% 52%, rgba(255,212,59,0.5), transparent 60%);
+    radial-gradient(ellipse at 30% 48%, rgba(225,6,0,0.5), transparent 55%),
+    radial-gradient(ellipse at 70% 52%, rgba(255,160,0,0.35), transparent 60%);
   transition: opacity 380ms ease, transform 380ms ease;
   pointer-events: none;
 }
 
 .aero-stage.drs-open .pressure-field {
-  opacity: 0.22;
+  opacity: 0.12;
   transform: scaleX(0.58) translateX(4rem);
 }
 
@@ -174,11 +174,12 @@
   left: 1rem; bottom: 1rem;
   display: flex; align-items: center; gap: 0.55rem;
   padding: 0.55rem 0.8rem;
-  background: rgba(0,0,0,0.52);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  color: rgba(255,255,255,0.7);
+  color: var(--color-muted);
   font-size: 0.78rem;
+  backdrop-filter: blur(6px);
 }
 
 .status-dot {
