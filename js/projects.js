@@ -1,6 +1,51 @@
 // Edit this single data object to add or update projects across the site.
 const projects = [
   {
+    id: "f1-lap-optimizer",
+    name: "F1 Lap Time Optimizer",
+    summary: "Machine learning model that predicts Formula 1 qualifying lap times sector-by-sector, trained on 2026 season data and validated against real qualifying results.",
+    problem: "Predict 2026 Austrian GP qualifying order and sector times blind — before the session runs — using only prior-season data.",
+    tools: ["Python", "XGBoost", "FastF1", "pandas", "scikit-learn", "NumPy"],
+    outcome: "Model predicted VER on pole at 1:04.545 with sector-level breakdown for all 10 drivers. Validation against actual results added post-qualifying.",
+    thumbnail: "",
+    gallery: [],
+    recruiterSummary: "End-to-end ML pipeline built from data collection to prediction: scraped and processed 2026 F1 telemetry via FastF1, trained separate XGBoost regressors for each sector, and generated a blind qualifying prediction before the Austrian GP. Demonstrates applied ML, motorsport domain knowledge, and data engineering.",
+    links: [{ label: "GitHub", url: "https://github.com/itaniwafic01/f1-lap-optimizer" }],
+    technicalSections: [
+      {
+        title: "Model Architecture & Training Pipeline",
+        content: `Trained three independent XGBoost regressors — one per sector (S1, S2, S3) — on FastF1 telemetry data from the first seven rounds of the 2026 F1 season.<br><br>
+Features per driver per session included: compound type, tyre age, air and track temperature, session type, circuit characteristics, and historical sector performance. Final lap time is the sum of the three sector predictions, avoiding compounding errors from a single end-to-end model.<br><br>
+<strong>Tools:</strong> Python · XGBoost · FastF1 · pandas · scikit-learn · NumPy`,
+      },
+      {
+        title: "Blind Prediction — 2026 Austrian GP Qualifying",
+        content: `<div class="pred-note">Prediction generated before qualifying on <strong>June 28, 2026</strong>. No actual session data was used.</div><div class="pred-table-wrap">
+<table class="pred-table">
+  <thead>
+    <tr><th>Pos</th><th>Driver</th><th>Team</th><th>S1</th><th>S2</th><th>S3</th><th>Lap Time</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td class="driver">VER</td><td>Red Bull Racing</td><td>16.219</td><td>28.895</td><td>19.431</td><td class="laptime">1:04.545</td></tr>
+    <tr><td>2</td><td class="driver">HAM</td><td>Ferrari</td><td>16.346</td><td>28.813</td><td>19.497</td><td class="laptime">1:04.656</td></tr>
+    <tr><td>3</td><td class="driver">RUS</td><td>Mercedes</td><td>16.344</td><td>28.932</td><td>19.415</td><td class="laptime">1:04.691</td></tr>
+    <tr><td>4</td><td class="driver">NOR</td><td>McLaren</td><td>16.441</td><td>28.859</td><td>19.411</td><td class="laptime">1:04.711</td></tr>
+    <tr><td>5</td><td class="driver">LEC</td><td>Ferrari</td><td>16.339</td><td>28.997</td><td>19.469</td><td class="laptime">1:04.805</td></tr>
+    <tr><td>6</td><td class="driver">HAD</td><td>Racing Bulls</td><td>16.403</td><td>28.918</td><td>19.499</td><td class="laptime">1:04.819</td></tr>
+    <tr><td>7</td><td class="driver">ANT</td><td>Mercedes</td><td>16.403</td><td>28.963</td><td>19.527</td><td class="laptime">1:04.893</td></tr>
+    <tr><td>8</td><td class="driver">PIA</td><td>McLaren</td><td>16.404</td><td>28.962</td><td>19.546</td><td class="laptime">1:04.912</td></tr>
+    <tr><td>9</td><td class="driver">LAW</td><td>Racing Bulls</td><td>16.610</td><td>29.197</td><td>19.590</td><td class="laptime">1:05.398</td></tr>
+    <tr><td>10</td><td class="driver">GAS</td><td>Alpine</td><td>16.586</td><td>29.242</td><td>19.626</td><td class="laptime">1:05.454</td></tr>
+  </tbody>
+</table></div>`,
+      },
+      {
+        title: "Actual Results vs Prediction — Coming June 28",
+        content: `<div class="pred-placeholder"><span class="pred-placeholder-dot"></span><div>Actual qualifying results will be added here after the session on <strong>June 28, 2026</strong>.<br>A side-by-side comparison of predicted vs actual lap times and sector splits will follow.</div></div>`,
+      },
+    ],
+  },
+  {
     id: "f1-drs",
     name: "F1 DRS Aerodynamic Analysis",
     summary: "CFD and wind tunnel study of the Formula 1 Drag Reduction System, comparing drag and downforce in open and closed configurations.",
@@ -202,6 +247,18 @@ if (projectTemplate) {
   projectTemplate.querySelector("[data-project-problem]").textContent = project.problem;
   projectTemplate.querySelector("[data-project-tools]").textContent = project.tools.join(", ");
   projectTemplate.querySelector("[data-project-outcome]").textContent = project.outcome;
+
+  const linksSlot = projectTemplate.querySelector("[data-project-links]");
+  if (linksSlot) {
+    if (project.links && project.links.length > 0) {
+      linksSlot.innerHTML = project.links
+        .map((link) => `<a class="button secondary" href="${link.url}" target="_blank" rel="noopener">${link.label} ↗</a>`)
+        .join("");
+    } else {
+      linksSlot.innerHTML = "";
+    }
+  }
+
   const gallerySlot = projectTemplate.querySelector("[data-project-gallery]");
   if (gallerySlot) {
     if (project.gallery && project.gallery.length > 0) {
@@ -226,7 +283,7 @@ if (projectTemplate) {
           <span>+</span>
         </button>
         <div class="tech-content" id="tech-${index}">
-          <p>${section.content.replace(/\n/g, "<br>")}</p>
+          <div class="tech-body">${section.content.includes("<") ? section.content : section.content.replace(/\n/g, "<br>")}</div>
         </div>
       </div>
     `

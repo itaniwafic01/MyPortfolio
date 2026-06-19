@@ -307,6 +307,103 @@ header {
   color: var(--color-muted);
 }
 
+.project-links {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* ── Prediction table ── */
+.pred-note {
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  margin-bottom: 10px;
+}
+
+.pred-table-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.pred-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.pred-table th {
+  background: var(--color-accent);
+  color: #fff;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pred-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.pred-table tbody tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+.pred-table tbody tr:first-child td {
+  font-weight: 600;
+  background: rgba(47, 181, 163, 0.08);
+}
+
+.pred-table .driver {
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+}
+
+.pred-table .laptime {
+  font-weight: 700;
+  color: var(--color-accent-dark);
+  font-family: var(--font-display);
+}
+
+/* ── Placeholder block ── */
+.pred-placeholder {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 1px dashed var(--color-accent);
+  border-radius: var(--radius-md);
+  background: rgba(47, 181, 163, 0.05);
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.pred-placeholder-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 5px;
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+.tech-body {
+  color: var(--color-muted);
+  line-height: 1.65;
+}
+
 .contact-card {
   background: var(--color-surface);
   padding: 24px;
