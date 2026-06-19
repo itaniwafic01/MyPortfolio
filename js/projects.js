@@ -31,7 +31,7 @@ Features per driver per session included: compound type, tyre age, air and track
     <tr><td>3</td><td class="driver">RUS</td><td>Mercedes</td><td>16.344</td><td>28.932</td><td>19.415</td><td class="laptime">1:04.691</td></tr>
     <tr><td>4</td><td class="driver">NOR</td><td>McLaren</td><td>16.441</td><td>28.859</td><td>19.411</td><td class="laptime">1:04.711</td></tr>
     <tr><td>5</td><td class="driver">LEC</td><td>Ferrari</td><td>16.339</td><td>28.997</td><td>19.469</td><td class="laptime">1:04.805</td></tr>
-    <tr><td>6</td><td class="driver">HAD</td><td>Racing Bulls</td><td>16.403</td><td>28.918</td><td>19.499</td><td class="laptime">1:04.819</td></tr>
+    <tr><td>6</td><td class="driver">HAD</td><td>Red Bull Racing</td><td>16.403</td><td>28.918</td><td>19.499</td><td class="laptime">1:04.819</td></tr>
     <tr><td>7</td><td class="driver">ANT</td><td>Mercedes</td><td>16.403</td><td>28.963</td><td>19.527</td><td class="laptime">1:04.893</td></tr>
     <tr><td>8</td><td class="driver">PIA</td><td>McLaren</td><td>16.404</td><td>28.962</td><td>19.546</td><td class="laptime">1:04.912</td></tr>
     <tr><td>9</td><td class="driver">LAW</td><td>Racing Bulls</td><td>16.610</td><td>29.197</td><td>19.590</td><td class="laptime">1:05.398</td></tr>
