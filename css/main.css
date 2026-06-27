@@ -399,6 +399,16 @@ header {
   50%       { opacity: 0.4; transform: scale(0.7); }
 }
 
+.delta-good {
+  color: var(--color-accent-dark);
+  font-weight: 700;
+}
+
+.delta-miss {
+  color: #c0392b;
+  font-weight: 700;
+}
+
 .tech-body {
   color: var(--color-muted);
   line-height: 1.65;
