@@ -46,6 +46,62 @@ Features per driver per session included: compound type, tyre age, air and track
     ],
   },
   {
+    id: "jarvis",
+    name: "JARVIS — Self-Hosted AI Assistant",
+    summary: "A fully functional, locally-hosted AI assistant built on my own hardware over 13 million tokens of directed development with Claude. Voice and text interface, 49 integrated tools, custom 3D UI — built deliberately to free up mental bandwidth for hands-on engineering work.",
+    problem: "Build a personal AI system that actually runs pieces of my life: email, calendar, documents, finances, job search — accessible from anywhere, running on my own hardware, tuned to an engineering workflow.",
+    tools: ["Python", "FastAPI", "Ollama", "SQLite", "Three.js", "SearXNG", "faster-whisper", "Piper TTS", "Tailscale"],
+    outcome: "49 integrated tools spanning email, calendar, contacts, memory, documents, reminders, to-do, job search, voice I/O, image analysis, and math. Accessible from Mac, Telegram, or any browser over Tailscale. CPU-inference on modest hardware (i7-1165G7, 20 GB RAM).",
+    thumbnail: "assets/images/jarvis_dashboard.png",
+    gallery: [
+      "assets/images/jarvis_dashboard.png",
+      "assets/images/jarvis_chat.png",
+      "assets/images/jarvis_tools_1.png",
+      "assets/images/jarvis_tools_2.png",
+    ],
+    recruiterSummary: "Directed the architecture and full integration of a self-hosted AI assistant — FastAPI backend with Server-Sent Events for streaming, vanilla JS/HTML/CSS frontend with a Three.js 3D interface, Ollama serving two local LLMs (qwen2.5:7b default, deepseek-r1:14b deep mode), and SQLite for persistent storage across features. 49 tools built across 10+ categories. Remote access via Tailscale. Transparent about the human-AI collaboration model: I designed the system, directed decisions, tested, and pushed back on failures — Claude implemented. That split is the skill.",
+    links: [],
+    technicalSections: [
+      {
+        title: "System Architecture",
+        content: `The backend is <strong>FastAPI (Python)</strong> serving a REST API with Server-Sent Events for token-by-token streaming responses. The frontend is deliberate vanilla JS/HTML/CSS — no framework, no build step — a single <code>app.js</code> talking directly to the API. The 3D orb interface is built with <strong>Three.js</strong>, animating in real time to reflect JARVIS's state (idle, listening, thinking, speaking).<br><br>
+Each feature domain uses its own <strong>SQLite file</strong> — chat history, memory, contacts, reminders, to-do, finances — keeping data isolated and the system simple to debug or extend.<br><br>
+Remote access is handled by <strong>Tailscale</strong>, which creates a private network across devices without exposing any ports. Accessible from the Mac, from Telegram, or from any browser.`,
+      },
+      {
+        title: "Inference Stack & Voice Pipeline",
+        content: `Two local LLMs served via <strong>Ollama</strong>:<br>
+• <strong>qwen2.5:7b-instruct</strong> — fast default for most tasks<br>
+• <strong>deepseek-r1:14b</strong> — opt-in "Deep Mode" for harder reasoning (user-toggled per chat)<br><br>
+Inference is CPU-bound in practice — the host machine's NVIDIA MX350 (2 GB VRAM) can't hold the model, so the GPU contributes roughly 4% of compute. This keeps latency honest: results are real, not benchmarked on a high-end rig.<br><br>
+Voice pipeline: <strong>faster-whisper</strong> for speech-to-text (local, no cloud), <strong>Piper TTS</strong> for synthesis. Web search is self-hosted via <strong>SearXNG</strong> — no API keys, no third-party query logging.`,
+      },
+      {
+        title: "Tool Ecosystem — 49 Tools",
+        content: `<div class="pred-note">Tools are grouped by domain and selectable per-chat to control context size and response speed.</div><div class="pred-table-wrap"><table class="pred-table"><thead><tr><th>Domain</th><th>Tools</th></tr></thead><tbody>
+<tr><td><strong>General</strong></td><td>web_search, get_current_time, get_weather, run_python</td></tr>
+<tr><td><strong>Email</strong></td><td>read_recent_emails, search_emails, send_email, reply_to_email, forward_email, archive_email, delete_email, update_email_flags, save_draft</td></tr>
+<tr><td><strong>Memory</strong></td><td>remember, recall, forget</td></tr>
+<tr><td><strong>Conversations</strong></td><td>search_conversations, reindex_conversations</td></tr>
+<tr><td><strong>Contacts</strong></td><td>add_contact, find_contact, list_contacts, remove_contact</td></tr>
+<tr><td><strong>Calendar</strong></td><td>list_calendar_events, add_calendar_event, update_calendar_event, delete_calendar_event</td></tr>
+<tr><td><strong>Documents</strong></td><td>search_documents, list_indexed_documents, reindex_documents, read_document</td></tr>
+<tr><td><strong>Device Control</strong></td><td>open_app, open_url</td></tr>
+<tr><td><strong>Reminders</strong></td><td>set_reminder, list_reminders, cancel_reminder</td></tr>
+<tr><td><strong>To-Do List</strong></td><td>add_todo, list_todos, complete_todo, delete_todo</td></tr>
+<tr><td><strong>Jobs</strong></td><td>search_jobs</td></tr>
+<tr><td><strong>Attachments</strong></td><td>analyze_image, read_image_text, save_attachment</td></tr>
+<tr><td><strong>Math</strong></td><td>math_calculus, math_stats, math_plot</td></tr>
+</tbody></table></div>`,
+      },
+      {
+        title: "On the Human–AI Collaboration Model",
+        content: `This project was built over <strong>13 million tokens</strong> of directed development. Claude (Anthropic) did the majority of implementation: architecture decisions, debugging, frontend, backend. My role was direction, testing, and pushback — deciding what to build, how it should behave, and when something wasn't right.<br><br>
+I'm transparent about this split because I think it's the honest version of what engineering with AI actually looks like in 2026. The skill isn't writing every line — it's knowing what to build, how to evaluate whether it works, and how to push a system toward something useful. That's what I practiced here, across 13 million tokens of iteration.`,
+      },
+    ],
+  },
+  {
     id: "f1-drs",
     name: "F1 DRS Aerodynamic Analysis",
     summary: "CFD and wind tunnel study of the Formula 1 Drag Reduction System, comparing drag and downforce in open and closed configurations.",
