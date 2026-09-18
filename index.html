@@ -54,12 +54,12 @@
             <div class="car" aria-label="Animated Formula 1 car side profile">
               <svg class="car-svg" viewBox="0 0 900 260" preserveAspectRatio="xMidYMid meet" role="img" aria-hidden="true">
                 <defs>
-                  <linearGradient id="bodyGrad" x1="60" y1="0" x2="640" y2="0" gradientUnits="userSpaceOnUse">
+                  <linearGradient id="bodyGrad" x1="60" y1="0" x2="700" y2="0" gradientUnits="userSpaceOnUse">
                     <stop offset="0%" stop-color="#071a5f"/>
-                    <stop offset="70%" stop-color="#0e2678"/>
-                    <stop offset="70%" stop-color="#ffd400"/>
-                    <stop offset="78%" stop-color="#ffd400"/>
-                    <stop offset="78%" stop-color="#d4141e"/>
+                    <stop offset="66%" stop-color="#0e2678"/>
+                    <stop offset="66%" stop-color="#ffd400"/>
+                    <stop offset="74%" stop-color="#ffd400"/>
+                    <stop offset="74%" stop-color="#d4141e"/>
                     <stop offset="100%" stop-color="#d4141e"/>
                   </linearGradient>
                   <radialGradient id="tireGrad" cx="42%" cy="38%" r="65%">
@@ -78,77 +78,79 @@
                 </defs>
 
                 <!-- Ground contact shadows -->
-                <ellipse cx="440" cy="228" rx="380" ry="12" fill="rgba(10,15,25,0.10)"/>
-                <ellipse cx="280" cy="234" rx="55" ry="10" fill="rgba(10,15,25,0.22)"/>
-                <ellipse cx="650" cy="234" rx="55" ry="10" fill="rgba(10,15,25,0.22)"/>
+                <ellipse cx="440" cy="230" rx="420" ry="12" fill="rgba(10,15,25,0.10)"/>
+                <ellipse cx="185" cy="236" rx="52" ry="10" fill="rgba(10,15,25,0.22)"/>
+                <ellipse cx="670" cy="236" rx="52" ry="10" fill="rgba(10,15,25,0.22)"/>
 
                 <g filter="url(#carDropShadow)">
-                  <!-- Wheels -->
+                  <!-- Wheels: wide wheelbase matching real F1 car proportions -->
                   <g class="wheel-group">
-                    <circle cx="280" cy="184" r="42" fill="url(#tireGrad)"/>
-                    <circle cx="280" cy="184" r="25" fill="url(#rimGrad)"/>
-                    <circle cx="280" cy="184" r="14" fill="#161820" stroke="#3b3f47" stroke-width="1.5"/>
-                    <g stroke="#c7ccd4" stroke-width="2.4" stroke-linecap="round">
-                      <line x1="280" y1="184" x2="280" y2="163"/>
-                      <line x1="280" y1="184" x2="298" y2="173"/>
-                      <line x1="280" y1="184" x2="298" y2="195"/>
-                      <line x1="280" y1="184" x2="280" y2="205"/>
-                      <line x1="280" y1="184" x2="262" y2="195"/>
-                      <line x1="280" y1="184" x2="262" y2="173"/>
+                    <circle cx="185" cy="188" r="40" fill="url(#tireGrad)"/>
+                    <circle cx="185" cy="188" r="24" fill="url(#rimGrad)"/>
+                    <circle cx="185" cy="188" r="13" fill="#161820" stroke="#3b3f47" stroke-width="1.5"/>
+                    <g stroke="#c7ccd4" stroke-width="2.3" stroke-linecap="round">
+                      <line x1="185" y1="188" x2="185" y2="168"/>
+                      <line x1="185" y1="188" x2="202" y2="178"/>
+                      <line x1="185" y1="188" x2="202" y2="198"/>
+                      <line x1="185" y1="188" x2="185" y2="208"/>
+                      <line x1="185" y1="188" x2="168" y2="198"/>
+                      <line x1="185" y1="188" x2="168" y2="178"/>
                     </g>
-                    <circle cx="280" cy="184" r="4.2" fill="#e7e9ec"/>
+                    <circle cx="185" cy="188" r="4" fill="#e7e9ec"/>
                   </g>
                   <g class="wheel-group">
-                    <circle cx="650" cy="184" r="42" fill="url(#tireGrad)"/>
-                    <circle cx="650" cy="184" r="25" fill="url(#rimGrad)"/>
-                    <circle cx="650" cy="184" r="14" fill="#161820" stroke="#3b3f47" stroke-width="1.5"/>
-                    <g stroke="#c7ccd4" stroke-width="2.4" stroke-linecap="round">
-                      <line x1="650" y1="184" x2="650" y2="163"/>
-                      <line x1="650" y1="184" x2="668" y2="173"/>
-                      <line x1="650" y1="184" x2="668" y2="195"/>
-                      <line x1="650" y1="184" x2="650" y2="205"/>
-                      <line x1="650" y1="184" x2="632" y2="195"/>
-                      <line x1="650" y1="184" x2="632" y2="173"/>
+                    <circle cx="670" cy="188" r="40" fill="url(#tireGrad)"/>
+                    <circle cx="670" cy="188" r="24" fill="url(#rimGrad)"/>
+                    <circle cx="670" cy="188" r="13" fill="#161820" stroke="#3b3f47" stroke-width="1.5"/>
+                    <g stroke="#c7ccd4" stroke-width="2.3" stroke-linecap="round">
+                      <line x1="670" y1="188" x2="670" y2="168"/>
+                      <line x1="670" y1="188" x2="687" y2="178"/>
+                      <line x1="670" y1="188" x2="687" y2="198"/>
+                      <line x1="670" y1="188" x2="670" y2="208"/>
+                      <line x1="670" y1="188" x2="653" y2="198"/>
+                      <line x1="670" y1="188" x2="653" y2="178"/>
                     </g>
-                    <circle cx="650" cy="184" r="4.2" fill="#e7e9ec"/>
+                    <circle cx="670" cy="188" r="4" fill="#e7e9ec"/>
                   </g>
 
-                  <!-- Front wing: long, low, well ahead of the front wheel -->
-                  <path d="M30,212 C90,222 170,220 238,203 C195,200 90,201 30,205 Z" fill="#0b1c4d"/>
-                  <path d="M45,196 C95,193 155,192 210,189 C175,186 100,187 48,191 Z" fill="#ffd400"/>
-                  <path d="M30,180 L37,222" stroke="#e9ecef" stroke-width="3" stroke-linecap="round"/>
-                  <path d="M225,201 L240,197 L238,206 L222,208 Z" fill="#0b1c4d"/>
+                  <!-- Front wing: shorter/blunter, matching real reference proportions -->
+                  <path d="M45,206 C90,216 140,216 178,204 C150,201 90,202 45,204 Z" fill="#0b1c4d"/>
+                  <path d="M58,193 C95,190 140,189 172,188 C145,185 95,186 60,189 Z" fill="#ffd400"/>
+                  <path d="M45,178 L51,216" stroke="#e9ecef" stroke-width="3" stroke-linecap="round"/>
 
-                  <!-- Single body silhouette: sharp nose rise -> flat engine cover plateau -> tail taper -->
-                  <path d="M238,203
-                           C 285,182 335,155 375,132
-                           C 400,118 415,108 430,102
-                           C 450,94 470,91 490,92
-                           C 520,94 555,100 585,112
-                           C 605,120 620,132 628,148
-                           L 628,196
-                           C 600,202 560,207 520,212
-                           C 490,215 460,215 430,212
-                           C 400,209 350,206 300,205
-                           L 238,203 Z" fill="url(#bodyGrad)"/>
+                  <!-- Single body silhouette: blunter nose, fuller mid-body, longer flat engine cover -->
+                  <path d="M178,204
+                           C 220,184 260,158 295,140
+                           C 320,127 345,116 375,110
+                           C 400,105 430,104 455,108
+                           C 500,115 560,122 610,135
+                           C 638,143 655,154 662,170
+                           L 662,205
+                           C 630,211 590,215 550,216
+                           C 500,217 450,215 400,212
+                           C 340,208 260,206 178,204 Z" fill="url(#bodyGrad)"/>
 
                   <!-- Sidepod undercut shading -->
-                  <path d="M450,190 C480,204 530,206 570,198 C540,203 495,204 460,197 Z" fill="rgba(4,8,20,0.28)"/>
-                  <ellipse cx="465" cy="150" rx="8" ry="13" fill="#05070c"/>
+                  <path d="M420,195 C460,210 520,213 570,203 C535,208 480,209 435,201 Z" fill="rgba(4,8,20,0.28)"/>
+                  <ellipse cx="435" cy="155" rx="9" ry="14" fill="#05070c"/>
 
                   <!-- Gloss highlight -->
-                  <path d="M245,193 C295,168 345,140 385,116 C415,100 445,92 475,91" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M185,196 C230,172 270,148 305,131 C335,116 365,108 395,105" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
 
-                  <!-- Cockpit + halo (tallest point on the car) -->
-                  <ellipse cx="465" cy="90" rx="15" ry="8" fill="#0a0a0c" stroke="#ffd400" stroke-width="2"/>
-                  <path d="M437,94 C437,64 455,46 479,46 C501,46 513,66 509,94" fill="none" stroke="#ffd400" stroke-width="6" stroke-linecap="round"/>
-                  <path d="M479,46 L479,88" stroke="#ffd400" stroke-width="5" stroke-linecap="round"/>
+                  <!-- Cockpit + halo (tallest point, ~38% along wheelbase, matching reference) -->
+                  <ellipse cx="378" cy="103" rx="15" ry="8" fill="#0a0a0c" stroke="#ffd400" stroke-width="2"/>
+                  <path d="M350,107 C350,72 370,50 396,50 C420,50 434,72 430,107" fill="none" stroke="#ffd400" stroke-width="6" stroke-linecap="round"/>
+                  <path d="M396,50 L396,101" stroke="#ffd400" stroke-width="5" stroke-linecap="round"/>
+
+                  <!-- Beam wing: small lower rear aero element near the wheel (authentic detail) -->
+                  <path d="M645,178 C665,174 685,175 698,180 C682,186 660,187 645,184 Z" fill="#0b1c4d"/>
+                  <path d="M650,176 L654,187" stroke="#e9ecef" stroke-width="2" stroke-linecap="round"/>
 
                   <!-- Rear wing pylon: swan-neck strut leaning back so the wing clears the wheel -->
-                  <path d="M626,150 L646,150 L678,99 L658,99 Z" fill="#0b1c4d"/>
+                  <path d="M711,158 L731,158 L742,95 L722,95 Z" fill="#0b1c4d"/>
 
                   <!-- Rear wing (original correctly-tested geometry, repositioned) -->
-                  <g transform="translate(666,2) scale(0.58)">
+                  <g transform="translate(667,31.5) scale(0.58)">
                     <path class="endplate" d="M50 42 L50 156"></path>
                     <path class="endplate" d="M172 42 L172 156"></path>
                     <path class="mainplane" d="M41 93 C58 102 92 97 126 89 C154 82 178 74 199 64 C171 89 137 107 96 115 C66 121 41 118 31 107 C22 97 26 87 41 93 Z"></path>
