@@ -2,6 +2,7 @@
 const projects = [
   {
     id: "f1-lap-optimizer",
+    categories: ["data", "simulation"],
     name: "F1 Lap Time Optimizer",
     summary: "Machine learning model that predicts Formula 1 qualifying lap times sector-by-sector, trained on 2026 season data and validated against real qualifying results.",
     problem: "Predict 2026 Austrian GP qualifying order and sector times blind — before the session runs — using only prior-season data.",
@@ -47,6 +48,7 @@ Features per driver per session included: compound type, tyre age, air and track
   },
   {
     id: "jarvis",
+    categories: ["systems", "data"],
     name: "JARVIS — Self-Hosted AI Assistant",
     summary: "A fully functional, locally-hosted AI assistant built on my own hardware over 13 million tokens of directed development with Claude. Voice and text interface, 49 integrated tools, custom 3D UI — built deliberately to free up mental bandwidth for hands-on engineering work.",
     problem: "Build a personal AI system that actually runs pieces of my life: email, calendar, documents, finances, job search — accessible from anywhere, running on my own hardware, tuned to an engineering workflow.",
@@ -64,21 +66,26 @@ Features per driver per session included: compound type, tyre age, air and track
     technicalSections: [
       {
         title: "System Architecture",
-        content: `The backend is <strong>FastAPI (Python)</strong> serving a REST API with Server-Sent Events for token-by-token streaming responses. The frontend is deliberate vanilla JS/HTML/CSS — no framework, no build step — a single <code>app.js</code> talking directly to the API. The 3D orb interface is built with <strong>Three.js</strong>, animating in real time to reflect JARVIS's state (idle, listening, thinking, speaking).<br><br>
-Each feature domain uses its own <strong>SQLite file</strong> — chat history, memory, contacts, reminders, to-do, finances — keeping data isolated and the system simple to debug or extend.<br><br>
-Remote access is handled by <strong>Tailscale</strong>, which creates a private network across devices without exposing any ports. Accessible from the Mac, from Telegram, or from any browser.`,
+        content: `The backend is <strong>FastAPI (Python)</strong> serving a REST API with Server-Sent Events for token-by-token streaming responses. The frontend is deliberate vanilla JS/HTML/CSS — no framework, no build step — a single <code>app.js</code> talking directly to the API. The 3D orb interface is built with <strong>Three.js</strong>, animating in real time to reflect JARVIS's state: idle, listening, thinking, speaking.<br><br>
+Each feature domain uses its own <strong>SQLite file</strong> — chat history, memory, contacts, reminders, to-do, finances — keeping data isolated and the system simple to debug or extend. Remote access runs over <strong>Tailscale</strong>, creating a private network across devices without exposing any ports. Two local LLMs served via <strong>Ollama</strong>: <strong>qwen2.5:7b-instruct</strong> as the fast default and <strong>deepseek-r1:14b</strong> as opt-in Deep Mode for harder reasoning. Inference is fully CPU-bound — the host GPU (NVIDIA MX350, 2 GB VRAM) contributes roughly 4% of compute. The results are real, not benchmarked on a high-end rig.`,
       },
       {
-        title: "Inference Stack & Voice Pipeline",
-        content: `Two local LLMs served via <strong>Ollama</strong>:<br>
-• <strong>qwen2.5:7b-instruct</strong> — fast default for most tasks<br>
-• <strong>deepseek-r1:14b</strong> — opt-in "Deep Mode" for harder reasoning (user-toggled per chat)<br><br>
-Inference is CPU-bound in practice — the host machine's NVIDIA MX350 (2 GB VRAM) can't hold the model, so the GPU contributes roughly 4% of compute. This keeps latency honest: results are real, not benchmarked on a high-end rig.<br><br>
-Voice pipeline: <strong>faster-whisper</strong> for speech-to-text (local, no cloud), <strong>Piper TTS</strong> for synthesis. Web search is self-hosted via <strong>SearXNG</strong> — no API keys, no third-party query logging.`,
+        title: "The Hard Problem: KV Cache on Underpowered Hardware",
+        content: `JARVIS has 49 tools. Sending all their schemas on every request was costing <strong>90+ seconds of pure prefill</strong> before the model processed a single word. The fix — semantic retrieval to narrow the tool list per turn — seemed straightforward. It wasn't.<br><br>
+<strong>The reordering trap.</strong> The obvious approach was to re-select the most relevant tools each turn. But Ollama/llama.cpp only reuses its KV cache on an <em>exact byte-for-byte match</em> of the prompt prefix. Reordering the same 49 tools — zero content change — caused a full cold-start reprocess every time, making things slower than before.<br><br>
+<strong>The fix.</strong> Freeze the active tool set per session. Only recompute on genuine topic drift. This required getting the "has the topic actually changed?" heuristic right across three iterations — naive approaches either broke on chained follow-ups ("weather in Beirut" → "what about Paris?") or missed genuine topic switches.<br><br>
+<strong>The hidden cause.</strong> A background health check was silently evicting the model's KV cache on every poll in every live session — the actual dominant source of latency, hiding beneath the tool-schema problem. Discovered only after building a proper benchmark (earlier scripts let later test runs inherit a still-warm cache from the previous one; force-killing the inference process to get a clean state permanently broke caching for that process's lifetime).<br><br>
+<strong>Measured result</strong> — validated with an A/B/C benchmark, not estimated: <strong>4.1× faster cold-start response, 3.3× fewer tokens per conversation.</strong>`,
+      },
+      {
+        title: "Document Retrieval & Real-World Usage",
+        content: `One of the most-used features: course-scoped group chats for engineering coursework. JARVIS has access to a shared document library — PDF lecture slides and Word homework sheets, auto-injected per course — and uses it to answer against source material rather than general training.<br><br>
+A concrete example: checking an ideal Otto cycle efficiency calculation (compression ratio r = 9, γ = 1.4). JARVIS retrieves the relevant formula from the actual lecture slides, verifies the arithmetic with a real calculator tool rather than computing in its head, and confirms or corrects the answer against the source. The document ingestion required specially extracting equations from Office Math markup and Symbol-font Greek letters embedded in PDFs — formats that would otherwise come through as gibberish.<br><br>
+A lighter contrast: expense logging via a Telegram bot (<code>/money</code> → tap Income/Expense/Bill → tap category → type amount). No LLM call in the loop — deterministic, instant. Monthly budget ceiling with overage warnings, manual adjustment for one-off costs like a hospital bill, and a browser dashboard with filterable ledger and category breakdown chart. All backed by a single SQLite table. It does exactly what's used, nothing speculative.`,
       },
       {
         title: "Tool Ecosystem — 49 Tools",
-        content: `<div class="pred-note">Tools are grouped by domain and selectable per-chat to control context size and response speed.</div><div class="pred-table-wrap"><table class="pred-table"><thead><tr><th>Domain</th><th>Tools</th></tr></thead><tbody>
+        content: `<div class="pred-note">Tools are grouped by domain and selectable per-chat. Fewer active tools = smaller prompt prefix = faster KV cache reuse.</div><div class="pred-table-wrap"><table class="pred-table"><thead><tr><th>Domain</th><th>Tools</th></tr></thead><tbody>
 <tr><td><strong>General</strong></td><td>web_search, get_current_time, get_weather, run_python</td></tr>
 <tr><td><strong>Email</strong></td><td>read_recent_emails, search_emails, send_email, reply_to_email, forward_email, archive_email, delete_email, update_email_flags, save_draft</td></tr>
 <tr><td><strong>Memory</strong></td><td>remember, recall, forget</td></tr>
@@ -103,6 +110,7 @@ I'm transparent about this split because I think it's the honest version of what
   },
   {
     id: "f1-drs",
+    categories: ["simulation", "mechanical"],
     name: "F1 DRS Aerodynamic Analysis",
     summary: "CFD and wind tunnel study of the Formula 1 Drag Reduction System, comparing drag and downforce in open and closed configurations.",
     problem: "Quantify the aerodynamic trade-offs of the F1 DRS flap using CFD simulation and experimental wind tunnel validation.",
@@ -146,6 +154,7 @@ I'm transparent about this split because I think it's the honest version of what
   },
   {
     id: "robotic-arm",
+    categories: ["mechanical", "systems"],
     name: "6-Axis Industrial Robotic Arm",
     summary:
       "Heavy-duty robotic arm designed for factory environments with high load and temperature requirements.",
@@ -176,6 +185,7 @@ I'm transparent about this split because I think it's the honest version of what
   },
   {
     id: "enduravolt",
+    categories: ["simulation", "mechanical"],
     name: "EnduraVolt",
     summary: "Energy-recovering suspension integrating regenerative damping to convert vibration into usable electrical power.",
     problem: "Recover waste vibration energy in vehicles without compromising ride quality.",
@@ -196,72 +206,6 @@ I'm transparent about this split because I think it's the honest version of what
       },
     ],
   },
-  {
-    id: "skylight",
-    name: "Automated Skylight Venting System",
-    summary: "Sensor-driven skylight control for passive ventilation and indoor air quality.",
-    problem: "Automate skylight ventilation based on temperature, humidity, and air quality.",
-    tools: ["Arduino", "Python", "SolidWorks", "Proteus"],
-    outcome: "Reduced indoor temperature peaks by 4.2°C in lab tests.",
-    recruiterSummary:
-      "Built a complete mechatronic prototype from sensors to actuation with reliable control logic.",
-    technicalSections: [
-      {
-        title: "Control Logic",
-        content:
-          "Implemented a rule-based controller with hysteresis to avoid rapid switching.\n\n\\( u = \n\\begin{cases}1 & T > T_{high} \\\\ 0 & T < T_{low}\\end{cases} \\)",
-      },
-      {
-        title: "Thermal Model",
-        content:
-          "Estimated indoor air temperature using a lumped capacitance model:\n\n\\( C\\frac{dT}{dt} = hA(T_{out}-T) + Q_{int} \\)",
-      },
-    ],
-  },
-  {
-    id: "fracture",
-    name: "Fracture Testing Machine",
-    summary: "Custom-built rig to characterize fracture toughness of polymer samples.",
-    problem: "Create a low-cost machine to measure fracture behavior with repeatable loading.",
-    tools: ["SolidWorks", "LabVIEW", "Strain Gauges"],
-    outcome: "Achieved 95% repeatability across 12 test runs.",
-    recruiterSummary:
-      "Delivered a lab-grade testing system with calibrated sensors and validated results.",
-    technicalSections: [
-      {
-        title: "Load Calibration",
-        content:
-          "Derived calibration curve from strain gauge bridge:\n\n\\( V_{out} = (\\Delta R/R) V_{exc} G \\)\n\nMapped voltage to load using linear regression.",
-      },
-      {
-        title: "Stress Intensity",
-        content:
-          "Calculated stress intensity factor:\n\n\\( K_I = Y\\sigma\\sqrt{\\pi a} \\)",
-      },
-    ],
-  },
-  {
-    id: "impact",
-    name: "Impact Toughness Testing Machine",
-    summary: "Instrumented pendulum impact tester with energy absorption analysis.",
-    problem: "Quantify material impact toughness using a repeatable pendulum test.",
-    tools: ["SolidWorks", "MATLAB", "DAQ", "Laser Sensor"],
-    outcome: "Automated energy curve extraction with 12% lower error vs. manual readout.",
-    recruiterSummary:
-      "Integrated sensing and data acquisition to turn a classic test into a digital workflow.",
-    technicalSections: [
-      {
-        title: "Energy Calculation",
-        content:
-          "Impact energy derived from pendulum height loss:\n\n\\( E = m g (h_1 - h_2) \\)",
-      },
-      {
-        title: "Signal Processing",
-        content:
-          "Filtered sensor output with a 2nd-order Butterworth filter to remove vibration noise.",
-      },
-    ],
-  },
 ];
 
 const projectGrid = document.querySelector("#projects-grid");
@@ -269,7 +213,7 @@ if (projectGrid) {
   projectGrid.innerHTML = projects
     .map(
       (project) => `
-      <article class="card reveal">
+      <article class="card reveal" data-categories="${(project.categories || []).join(" ")}">
         ${
           project.thumbnail
             ? `<img class="card-thumb" src="${project.thumbnail}" alt="${project.name} thumbnail" />`
@@ -295,6 +239,20 @@ if (projectTemplate) {
   const params = new URLSearchParams(window.location.search);
   const projectId = params.get("id") || projects[0].id;
   const project = projects.find((item) => item.id === projectId) || projects[0];
+
+  // Cinematic banner
+  const bannerImg = projectTemplate.querySelector("[data-project-banner-img]");
+  if (bannerImg) {
+    if (project.thumbnail) {
+      bannerImg.src = project.thumbnail;
+      bannerImg.alt = project.name;
+    } else if (project.gallery && project.gallery.length > 0) {
+      bannerImg.src = project.gallery[0];
+      bannerImg.alt = project.name;
+    } else {
+      bannerImg.style.display = "none";
+    }
+  }
 
   projectTemplate.querySelector("[data-project-title]").textContent = project.name;
   projectTemplate.querySelector("[data-project-summary]").textContent = project.summary;

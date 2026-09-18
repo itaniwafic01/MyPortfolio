@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Projects | Wafic Itani</title>
     <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/enhancements.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -36,6 +37,13 @@
           Each card summarizes the engineering problem, tools, and outcomes. Dive deeper for full
           technical analysis.
         </p>
+        <div class="filter-bar" id="filter-bar">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="simulation">Simulation</button>
+          <button class="filter-btn" data-filter="data">ML / Data</button>
+          <button class="filter-btn" data-filter="mechanical">Mechanical</button>
+          <button class="filter-btn" data-filter="systems">Systems</button>
+        </div>
         <div id="projects-grid" class="card-grid"></div>
       </section>
     </main>
@@ -47,5 +55,29 @@
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/projects.js"></script>
+    <script src="js/enhancements.js"></script>
+    <script>
+      // Filter tabs
+      const filterBar = document.getElementById("filter-bar");
+      if (filterBar) {
+        filterBar.addEventListener("click", e => {
+          const btn = e.target.closest(".filter-btn");
+          if (!btn) return;
+          filterBar.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          const f = btn.dataset.filter;
+          document.querySelectorAll("#projects-grid .card").forEach(card => {
+            const cats = card.dataset.categories || "";
+            if (f === "all" || cats.includes(f)) {
+              delete card.dataset.hidden;
+              card.style.display = "";
+            } else {
+              card.dataset.hidden = "1";
+              card.style.display = "none";
+            }
+          });
+        });
+      }
+    </script>
   </body>
 </html>

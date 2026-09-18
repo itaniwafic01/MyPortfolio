@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Details | Wafic Itani</title>
     <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/enhancements.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -42,11 +43,14 @@
     </header>
 
     <main id="project-template">
-      <section class="container project-hero reveal">
-        <p class="tagline">Project Detail</p>
-        <h1 data-project-title></h1>
-        <p data-project-summary></p>
-      </section>
+      <div class="project-hero-banner">
+        <img data-project-banner-img src="" alt="" aria-hidden="true" />
+        <div class="project-hero-banner-content container">
+          <p class="tagline">Project Detail</p>
+          <h1 data-project-title></h1>
+          <p data-project-summary></p>
+        </div>
+      </div>
 
       <section class="section container reveal">
         <h2>Recruiter Summary</h2>
@@ -93,5 +97,6 @@
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/projects.js"></script>
+    <script src="js/enhancements.js"></script>
   </body>
 </html>
