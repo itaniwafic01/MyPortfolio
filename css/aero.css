@@ -49,65 +49,22 @@
   position: absolute;
   left: 50%;
   top: 52%;
-  width: min(44rem, 86%);
-  height: min(14rem, 34vw);
+  width: min(50rem, 92%);
+  height: min(15.5rem, 36vw);
   transform: translate(-50%, -50%);
 }
 
-.floor, .nose, .sidepod, .cockpit, .halo,
-.front-wing, .rear-wing, .wheel {
-  position: absolute;
-}
-
-.floor {
-  left: 13%; bottom: 25%; width: 66%; height: 1.15rem;
-  background: linear-gradient(90deg, #06113f, #071a5f 62%, #d4141e 62% 100%);
-  clip-path: polygon(5% 0, 100% 18%, 94% 100%, 0 72%);
-}
-
-.nose {
-  left: 12%; bottom: 37%; width: 40%; height: 2.6rem;
-  background: linear-gradient(90deg, #071a5f 0 54%, #ffd400 54% 66%, #d4141e 66% 100%);
-  clip-path: polygon(0 42%, 88% 0, 100% 58%, 8% 100%);
-}
-
-.sidepod {
-  left: 43%; bottom: 34%; width: 25%; height: 4.5rem;
-  background: linear-gradient(135deg, #071a5f 0 58%, #122a8f 58% 76%, #ffd400 76% 86%, #d4141e 86% 100%);
-  clip-path: polygon(0 35%, 20% 0, 100% 24%, 82% 100%, 8% 86%);
-}
-
-.cockpit {
-  left: 47%; bottom: 61%; width: 12%; height: 3.2rem;
-  background: #101116;
-  border: 0.35rem solid #ffd400;
-  border-bottom: 0;
-  border-radius: 3rem 3rem 0 0;
-}
-
-.halo {
-  left: 45%; bottom: 72%; width: 17%; height: 3.2rem;
-  border: 0.42rem solid #ffd400;
-  border-bottom: 0;
-  border-radius: 50% 50% 0 0;
-}
-
-.front-wing {
-  left: 2%; bottom: 31%; width: 20%; height: 1.5rem;
-  background: linear-gradient(90deg, #d4141e 0 48%, #ffd400 48% 62%, #071a5f 62% 100%);
-  clip-path: polygon(0 0, 100% 20%, 90% 100%, 7% 82%);
-}
-
-.rear-wing {
-  right: 4%; bottom: 45%; width: 17%; height: 8rem;
-}
-
-.rear-wing-svg {
-  position: absolute;
-  inset: -2.4rem -2rem -1rem -2.4rem;
-  width: calc(100% + 4.4rem);
-  height: calc(100% + 3.4rem);
+.car-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
   overflow: visible;
+}
+
+.wheel-group {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: aero-spin 650ms linear infinite;
 }
 
 .mainplane, .flap-airfoil { fill: #0d4ed6; }
@@ -141,7 +98,7 @@
 
 .drs-flap {
   transform-box: fill-box;
-  transform-origin: 96% 8%;
+  transform-origin: 92% 88%;
   transform: rotate(0deg);
   transition: transform 440ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -149,23 +106,6 @@
 .aero-stage.drs-open .drs-flap {
   transform: rotate(32deg);
 }
-
-.wheel {
-  bottom: 3%; width: 7.6rem; aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle, #cfd5dd 0 17%, #15161a 18% 44%, #050505 45% 100%);
-  box-shadow: inset 0 0 0 0.55rem #2e333b;
-  animation: aero-spin 680ms linear infinite;
-}
-
-.wheel span {
-  position: absolute; inset: 26%;
-  border: 0.22rem dashed rgba(255,255,255,0.72);
-  border-radius: 50%;
-}
-
-.wheel.front { left: 20%; }
-.wheel.rear  { right: 20%; }
 
 /* ── Readout + DRS toggle ── */
 .stage-readout {
