@@ -52,97 +52,26 @@
             <canvas id="flowCanvas" aria-hidden="true"></canvas>
             <div class="pressure-field" aria-hidden="true"></div>
             <div class="car" aria-label="Animated Formula 1 car side profile">
-              <svg class="car-svg" viewBox="0 0 900 260" preserveAspectRatio="xMidYMid meet" role="img" aria-hidden="true">
-                <defs>
-                  <linearGradient id="bodyGrad" x1="140" y1="0" x2="672" y2="0" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#071a5f"/>
-                    <stop offset="68%" stop-color="#0e2678"/>
-                    <stop offset="68%" stop-color="#ffd400"/>
-                    <stop offset="76%" stop-color="#ffd400"/>
-                    <stop offset="76%" stop-color="#d4141e"/>
-                    <stop offset="100%" stop-color="#d4141e"/>
-                  </linearGradient>
-                  <radialGradient id="tireGrad" cx="42%" cy="38%" r="65%">
-                    <stop offset="0%" stop-color="#2b2e35"/>
-                    <stop offset="70%" stop-color="#15161a"/>
-                    <stop offset="100%" stop-color="#050505"/>
-                  </radialGradient>
-                  <radialGradient id="rimGrad" cx="40%" cy="35%" r="70%">
-                    <stop offset="0%" stop-color="#eef1f4"/>
-                    <stop offset="55%" stop-color="#cfd5dd"/>
-                    <stop offset="100%" stop-color="#8b929c"/>
-                  </radialGradient>
-                  <filter id="carDropShadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#000000" flood-opacity="0.28"/>
-                  </filter>
-                </defs>
-
-                <!-- Ground contact shadows -->
-                <ellipse cx="400" cy="225" rx="340" ry="12" fill="rgba(10,15,25,0.10)"/>
-                <ellipse cx="190" cy="232" rx="58" ry="11" fill="rgba(10,15,25,0.22)"/>
-                <ellipse cx="700" cy="232" rx="58" ry="11" fill="rgba(10,15,25,0.22)"/>
-
-                <g filter="url(#carDropShadow)">
-                  <!-- Wheels -->
-                  <g class="wheel-group">
-                    <circle cx="190" cy="182" r="44" fill="url(#tireGrad)"/>
-                    <circle cx="190" cy="182" r="26" fill="url(#rimGrad)"/>
-                    <circle cx="190" cy="182" r="15" fill="#161820" stroke="#3b3f47" stroke-width="1.5"/>
-                    <g stroke="#c7ccd4" stroke-width="2.6" stroke-linecap="round">
-                      <line x1="190" y1="182" x2="190" y2="160"/>
-                      <line x1="190" y1="182" x2="209" y2="171"/>
-                      <line x1="190" y1="182" x2="209" y2="193"/>
-                      <line x1="190" y1="182" x2="190" y2="204"/>
-                      <line x1="190" y1="182" x2="171" y2="193"/>
-                      <line x1="190" y1="182" x2="171" y2="171"/>
-                    </g>
-                    <circle cx="190" cy="182" r="4.5" fill="#e7e9ec"/>
-                  </g>
-                  <g class="wheel-group">
-                    <circle cx="700" cy="182" r="44" fill="url(#tireGrad)"/>
-                    <circle cx="700" cy="182" r="26" fill="url(#rimGrad)"/>
-                    <circle cx="700" cy="182" r="15" fill="#161820" stroke="#3b3f47" stroke-width="1.5"/>
-                    <g stroke="#c7ccd4" stroke-width="2.6" stroke-linecap="round">
-                      <line x1="700" y1="182" x2="700" y2="160"/>
-                      <line x1="700" y1="182" x2="719" y2="171"/>
-                      <line x1="700" y1="182" x2="719" y2="193"/>
-                      <line x1="700" y1="182" x2="700" y2="204"/>
-                      <line x1="700" y1="182" x2="681" y2="193"/>
-                      <line x1="700" y1="182" x2="681" y2="171"/>
-                    </g>
-                    <circle cx="700" cy="182" r="4.5" fill="#e7e9ec"/>
-                  </g>
-
-                  <!-- Front wing -->
-                  <path d="M15,214 C55,222 105,221 165,204 C138,201 65,203 15,207 Z" fill="#0b1c4d"/>
-                  <path d="M25,198 C62,195 100,194 143,192 C118,189 62,190 28,193 Z" fill="#ffd400"/>
-                  <path d="M15,182 L21,222" stroke="#e9ecef" stroke-width="3" stroke-linecap="round"/>
-
-                  <!-- Single body silhouette -->
-                  <path d="M140,206 C185,187 230,158 268,132 C292,113 312,101 335,96 C348,93 362,93 373,97 C410,108 460,125 520,148 C570,168 620,182 660,190 C670,193 675,198 672,204 L640,206 C610,207 585,220 550,222 C515,223 480,218 452,207 L330,206 L140,206 Z" fill="url(#bodyGrad)"/>
-
-                  <!-- Gloss highlight -->
-                  <path d="M148,196 C195,170 245,144 285,122 C310,107 335,99 358,96" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
-
-                  <!-- Cockpit + halo -->
-                  <ellipse cx="347" cy="98" rx="15" ry="8" fill="#0a0a0c" stroke="#ffd400" stroke-width="2"/>
-                  <path d="M322,100 C324,74 344,60 367,60 C390,60 398,78 394,102" fill="none" stroke="#ffd400" stroke-width="6" stroke-linecap="round"/>
-                  <path d="M367,60 L367,96" stroke="#ffd400" stroke-width="5" stroke-linecap="round"/>
-
-                  <!-- Rear wing pylon -->
-                  <path d="M650,125 L666,125 L672,190 L654,190 Z" fill="#0b1c4d"/>
-
-                  <!-- Rear wing (DRS-animated) -->
-                  <path class="endplate" d="M628,80 L628,148"></path>
-                  <path class="endplate" d="M704,88 L704,152"></path>
-                  <path class="mainplane" d="M624,124 C652,113 686,110 716,115 C690,127 658,131 624,132 Z"></path>
+              <div class="front-wing"></div>
+              <div class="nose"></div>
+              <div class="halo"></div>
+              <div class="cockpit"></div>
+              <div class="sidepod"></div>
+              <div class="floor"></div>
+              <div class="rear-wing">
+                <svg class="rear-wing-svg" viewBox="0 0 220 180" role="img" aria-label="Rear wing with pivoting DRS flap">
+                  <path class="endplate" d="M50 42 L50 156"></path>
+                  <path class="endplate" d="M172 42 L172 156"></path>
+                  <path class="mainplane" d="M41 93 C58 102 92 97 126 89 C154 82 178 74 199 64 C171 89 137 107 96 115 C66 121 41 118 31 107 C22 97 26 87 41 93 Z"></path>
                   <g class="drs-flap">
-                    <path class="flap-airfoil" d="M630,101 C657,91 688,88 708,92 C686,99 658,103 630,107 Z"></path>
+                    <path class="flap-airfoil" d="M135 55 C154 39 183 21 207 10 C190 35 173 58 151 75 C139 84 129 80 129 70 C129 64 131 59 135 55 Z"></path>
                   </g>
-                  <path class="reference-line" d="M634,140 L706,140"></path>
-                  <path class="reference-line upper" d="M636,96 L700,96"></path>
-                </g>
-              </svg>
+                  <path class="reference-line" d="M66 152 L176 152"></path>
+                  <path class="reference-line upper" d="M165 74 L214 74"></path>
+                </svg>
+              </div>
+              <div class="wheel front"><span></span></div>
+              <div class="wheel rear"><span></span></div>
             </div>
             <div class="stage-readout">
               <span class="status-dot"></span>
