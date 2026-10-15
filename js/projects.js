@@ -109,6 +109,111 @@ I'm transparent about this split because I think it's the honest version of what
     ],
   },
   {
+    id: "jarvis-drive",
+    categories: ["simulation", "systems"],
+    name: "JARVIS Drive — Phase 0: Autonomous Racing in Simulation",
+    status: "Phase 0 complete · October 2026 · Phase 1 coming",
+    summary: "An autonomous race car, built in simulation, that maps an unknown circuit on its first lap, computes its own optimal racing line, then races it — on 24 real-world F1 layouts. From an empty map to a flying lap, with no human input.",
+    problem: "Drop a 1/10-scale car onto a circuit it has never seen and have it map the track, plan a racing line and race it at speed — with no human input, a safety layer between every command and the motors, and every run observable live.",
+    tools: ["ROS 2 Humble", "F1TENTH Gym", "WSL2", "Python (NumPy, SciPy, Numba)", "slam_toolbox", "AMCL", "FastAPI", "WebSockets", "FastF1", "Tailscale", "pytest"],
+    outcome: "Map-then-race completes cleanly on all 24 tracks. Flying laps land within ~0.4 s of the planned lap time, self-built maps sit within ~7 cm of the true walls, and the racing line is 4–9% faster than the centreline.",
+    thumbnail: "",
+    gallery: [],
+    stats: [
+      { value: 24, label: "real F1 circuit layouts, auto-recognised from live position" },
+      { text: "24/24", label: "map-then-race runs clean: map lap, handover, flying laps, no crashes" },
+      { prefix: "±", value: 0.4, decimals: 1, suffix: " s", label: "flying lap vs planned lap time" },
+      { value: 7, suffix: " cm", label: "map wall error, 95th percentile (~99% wall coverage)" },
+      { text: "<1 ms", label: "E-stop reaction on the car (~0.13 s from the web button)" },
+    ],
+    recruiterSummary: "Project lead and systems designer: I defined the architecture and goals, made the engineering decisions, and ran and analysed every test. Implementation was AI-assisted (Claude). The result is a complete autonomous-racing stack developed and validated entirely in simulation: SLAM mapping on lap 1, a minimum-curvature racing line with a grip-limited speed profile, a latency-compensated pure-pursuit controller, an independent safety supervisor, and a live telemetry and mission-control dashboard inside my self-hosted JARVIS assistant. As a mechanical engineer, my contribution is the vehicle model: friction-circle grip limits, understeer gradient, and acceleration and braking limits that decide how fast the car can go.",
+    links: [],
+    technicalSections: [
+      {
+        title: "Pipeline: Empty Map to Flying Lap",
+        content: `A 1/10-scale car (the F1TENTH platform) starts on a track it has never seen. On lap 1 it drives cautiously with a reactive lidar controller while building a map. Once the lap closes, it saves the map, plans a racing line and hands over to a high-speed path tracker. SLAM is no longer running while it races.
+<ol class="pipeline-flow">
+<li><strong>Explore (lap 1)</strong>Follow-the-gap driving on lidar and odometry while slam_toolbox builds the map. Lap closure is detected, the map settles, and it is saved.</li>
+<li><strong>Plan</strong>Centreline extraction, then a minimum-curvature racing line, then a grip-limited speed profile.</li>
+<li><strong>Handover</strong>A smooth Hermite join from the car's current pose onto the line, with a controlled speed ramp.</li>
+<li><strong>Race</strong>Pure pursuit with understeer feed-forward, latency compensation and a speed lead.</li>
+<li><strong>Safety supervisor</strong>Every command passes through it on the way to <code>/drive</code>, the only path to the motors.</li>
+<li><strong>Telemetry bridge</strong>Streams live laps, maps, plots and the E-stop to the JARVIS dashboard.</li>
+</ol>`,
+      },
+      {
+        title: "Simulator & Environment",
+        content: `<strong>F1TENTH Gym</strong> on <strong>ROS 2 Humble</strong>, running in <strong>WSL2</strong> on a mid-range Windows laptop (i7-1165G7, 2 GB GPU). It was chosen deliberately over CARLA, which needs 6–8 GB+ of VRAM. F1TENTH publishes and consumes the same ROS topics as the real 1/10-scale car (<code>/scan</code>, <code>/odom</code>, <code>/drive</code>).<br><br>
+<strong>Gazebo was tried and dropped.</strong> Its stock Ackermann steering plugin has a hard-coded steering delay that cannot be tuned. I replaced it with a custom steering and drive model, but residual actuator drift under CPU load still made it unreliable. The decision was to stop fighting a simulator that was lying about the vehicle and make the 2-D gym the single source of truth.<br><br>
+<strong>Track library: 24 circuits.</strong> Real F1 layouts converted into occupancy-grid maps at 1/10 scale, including Spielberg, Monza, Monaco, Montreal, Budapest, Jeddah, Zandvoort, Sakhir, Las Vegas and Marina Bay. Each has a start/finish pose, its real F1 driving direction and a track-width model. The dashboard recognises which circuit the car is on from its trajectory alone. A KD-tree made that search about 6× faster (43 ms down to 7 ms), so it no longer stalls the server.`,
+      },
+      {
+        title: "Mapping: SLAM on Lap 1",
+        content: `<strong>slam_toolbox</strong> (Karto-based graph SLAM) builds the map while a <strong>follow-the-gap</strong> controller drives. Follow-the-gap is reactive: it steers toward the widest free gap in the lidar scan and slows for corners.<br><br>
+A supervisor detects <strong>lap closure</strong>, waits for the loop-closure optimisation to settle, saves the map, then freezes or localises the pose and hands over to the race controller.<br><br>
+<strong>Map quality is scored automatically</strong> against the ground-truth track. A rigid fit (ICP, refined with a chamfer distance-transform optimisation) gives wall error and coverage. The planner then builds a racing line on the self-made map and drives it in an offline replica on the <em>true</em> walls, which proves the map is race-worthy and not just pretty.<br><br>
+<strong>Result:</strong> self-built map walls within ~7 cm (95th percentile) of the true track, with ~99% wall coverage on Spielberg.`,
+      },
+      {
+        title: "Planning: Minimum-Curvature Racing Line & Speed Profile",
+        content: `The track centreline is extracted from the map. The racing line is then optimised to <strong>minimise curvature</strong> inside the track corridor, with a 0.55 m wall-safety margin.<br><br>
+<strong>Speed profile.</strong> Corner speeds come from a lateral-grip limit. A forward pass applies the acceleration limit and a backward pass applies the braking limit. A grip derate (0.85) and a braking stability margin keep the plan below the limit rather than on it.<br><br>
+This is where the mechanical-engineering side shows up: a vehicle model built on friction-circle grip, understeer gradient, and acceleration and braking limits.<br><br>
+<strong>Result:</strong> the racing line is about 4–9% faster than the centreline. Spielberg is ≈32.3 s per flying lap at the 16 m/s cap and ≈34.3 s at 12 m/s. Speed caps of 8, 12 and 16 m/s were all validated.`,
+      },
+      {
+        title: "Control: Pure Pursuit, Tuned for Speed",
+        content: `<strong>Pure pursuit</strong> path tracking on a kinematic bicycle model. Lookahead scales with speed: 0.4 m + 0.12 s × v, capped at 2.5 m.<br><br>
+<strong>Understeer feed-forward.</strong> Extra steering proportional to v² × curvature cancels the understeer that pure geometry ignores.<br><br>
+<strong>Latency compensation.</strong> The pose is predicted 40 ms ahead, so the car steers for where it <em>will</em> be. This was the fix that made 16 m/s work.<br><br>
+<strong>Speed lead.</strong> The car is commanded the target speed ~0.21 s ahead on the line, so braking and acceleration start on time.<br><br>
+<strong>Smooth handover.</strong> A cubic Hermite blend from the car's real pose onto the racing line. It shrinks automatically so it can never cut through a wall. A 1 m minimum lookahead and a 3 m/s² speed ramp keep the transition calm.`,
+      },
+      {
+        title: "Safety Supervisor",
+        content: `A separate node that is the <strong>only path to the motors</strong>. Every controller command passes through it. It stops the car on a command timeout, stale sensors, a collision or contact, a sudden localisation jump, divergence from the planned line, leaving the geofence, or a manual E-stop. After a stop, the car only resets once its inputs are healthy again.<br><br>
+<div class="pred-note">Fault-injection results. Each fault was injected on purpose and the stop time measured.</div><div class="pred-table-wrap"><table class="pred-table"><thead><tr><th>Fault</th><th>Time to stop</th></tr></thead><tbody>
+<tr><td>Command timeout</td><td>153 ms</td></tr>
+<tr><td>Stale odometry</td><td>208 ms</td></tr>
+<tr><td>Localisation jump</td><td>10 ms</td></tr>
+<tr><td>Contact</td><td>1 ms</td></tr>
+<tr><td>E-stop (on the car)</td><td>&lt; 1 ms</td></tr>
+<tr><td>E-stop (round trip from the web button)</td><td>0.126 s</td></tr>
+</tbody></table></div>`,
+      },
+      {
+        title: "Telemetry & Mission Control (inside JARVIS)",
+        content: `A ROS <strong>telemetry bridge</strong> streams the car's state over WebSocket to JARVIS, my self-hosted AI assistant (FastAPI backend, vanilla JS frontend). Each dashboard view gets its own screen, with no page scrolling:<br><br>
+• <strong>Live track map</strong>, zoomable, with the car, racing line and SLAM map growing in real time<br>
+• <strong>Lap timing and sector analysis</strong><br>
+• <strong>Comparison against real F1 laps</strong> via FastF1<br>
+• <strong>Power and powertrain view</strong> built on virtual sensors<br>
+• <strong>Handling</strong>, including real sideslip<br>
+• <strong>Calibrated thermal model</strong> with honest uncertainty bands<br><br>
+A <strong>Run Simulation</strong> form (track, mode race/explore/map-race, speed cap, laps, odometry model, advanced tuning) launches the sim on the laptop through a small runner service, and auto-stops on lap count, time limit, off-track or stall. An <strong>E-STOP / Reset</strong> button sits in the header with a "SAFETY STOP: reason" badge. JARVIS itself can answer questions about the runs through telemetry tools and a dedicated telemetry chat group, for example "why was lap 3 slower?"`,
+      },
+      {
+        title: "Validation Methodology",
+        content: `An <strong>offline replica</strong>, a Python re-implementation of the car and controller, runs whole sweeps across all 24 tracks in minutes. It matches the live simulator to within ~0.05 s per lap, so ideas are screened offline before they touch the sim.<br><br>
+<strong>Sweeps.</strong> A race pass on all 24 tracks came back 23/24 clean the first time. The one failure, Montreal, exposed a real handover bug, which was fixed. The map-then-race rollout then finished <strong>24/24 clean</strong>.<br><br>
+<strong>Regression discipline.</strong> Every fix was followed by a regression run on the reference track, where the Spielberg flying lap of 34.28 s had to stay unchanged. About 1,670 automated tests cover the JARVIS side, plus separate runner and planner suites.`,
+      },
+      {
+        title: "Challenges & What I Learned",
+        content: `<strong>1. Gazebo's steering plugin was fundamentally broken.</strong> Replacing it with a custom model taught me where the simulation was lying about the vehicle. The project then moved to the simpler simulator, which was trustworthy.<br><br>
+<strong>2. The 16 m/s instability was latency, not physics.</strong> A 40 ms pose prediction fixed it. A plausible tyre-model fix tested worse and was rejected.<br><br>
+<strong>3. The Montreal crash.</strong> A smooth-looking 15 m handover curve cut through a wall on the narrowest track. The fix was a join that sizes itself to the room available.<br><br>
+<strong>4. Realistic odometry is hard.</strong> With noisy, IMU-grade odometry, dead reckoning drifts ~1.35 m per lap, so racing needs localisation against the map. Mapping with noisy odometry can also false-close a lap on parallel straights. I scoped this and parked it deliberately, with documented findings, rather than hacking around it.<br><br>
+<strong>5. Systems engineering.</strong> The telemetry hub, a remote runner and the safety supervisor, all as a two-machine workflow (MacBook plus Windows laptop, deployed over Tailscale).`,
+      },
+      {
+        title: "On the Human–AI Collaboration Model",
+        content: `Same split as JARVIS: I directed the work and Claude (Anthropic) did most of the implementation. I set the goals, made the design calls (drop Gazebo, reject the tyre-model fix, scope the odometry problem out), then tested and judged every result. The engineering judgement is mine. The typing mostly isn't, and I'd rather say so plainly.<br><br>
+<strong>Algorithms involved:</strong> graph SLAM (Karto) · Monte-Carlo localisation (AMCL) · follow-the-gap · minimum-curvature path optimisation · grip-limited speed profiling · pure pursuit · understeer feed-forward · latency compensation · cubic Hermite path blending · ICP and chamfer map alignment · KD-tree spatial search`,
+      },
+    ],
+  },
+  {
     id: "f1-drs",
     categories: ["simulation", "mechanical"],
     name: "F1 DRS Aerodynamic Analysis",
@@ -256,6 +361,25 @@ if (projectTemplate) {
 
   projectTemplate.querySelector("[data-project-title]").textContent = project.name;
   projectTemplate.querySelector("[data-project-summary]").textContent = project.summary;
+
+  if (project.status) {
+    const chip = document.createElement("span");
+    chip.className = "status-chip";
+    chip.textContent = project.status;
+    projectTemplate.querySelector("[data-project-summary]").insertAdjacentElement("afterend", chip);
+  }
+
+  const statsSlot = projectTemplate.querySelector("[data-project-stats]");
+  if (statsSlot) {
+    statsSlot.innerHTML = (project.stats || [])
+      .map((stat) => {
+        const value = stat.text
+          ? stat.text
+          : `<span class="stat-counter" data-target="${stat.value}" data-prefix="${stat.prefix || ""}" data-suffix="${stat.suffix || ""}" data-decimals="${stat.decimals || 0}">${stat.prefix || ""}${stat.value.toFixed(stat.decimals || 0)}${stat.suffix || ""}</span>`;
+        return `<div class="stat-tile"><div class="stat-value">${value}</div><div class="stat-label">${stat.label}</div></div>`;
+      })
+      .join("");
+  }
   projectTemplate.querySelector("[data-project-recruiter]").textContent =
     project.recruiterSummary;
   projectTemplate.querySelector("[data-project-problem]").textContent = project.problem;

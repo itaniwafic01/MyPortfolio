@@ -286,3 +286,97 @@ body::before {
   color: var(--color-muted);
   line-height: 1.6;
 }
+
+/* ── Project stat strip + pipeline flow (project detail pages) ─────────────── */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.stat-tile {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px 18px 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  color: var(--color-accent-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  margin-top: 8px;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+.status-chip {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--color-accent);
+  background: rgba(47, 181, 163, 0.1);
+  color: var(--color-accent-dark);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.pipeline-flow {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  counter-reset: stage;
+}
+
+.pipeline-flow li {
+  position: relative;
+  counter-increment: stage;
+  padding: 0 0 18px 48px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.pipeline-flow li::before {
+  content: counter(stage);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pipeline-flow li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 34px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--color-border);
+}
+
+.pipeline-flow strong {
+  display: block;
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
