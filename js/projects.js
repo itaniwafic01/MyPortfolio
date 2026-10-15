@@ -117,8 +117,14 @@ I'm transparent about this split because I think it's the honest version of what
     problem: "Drop a 1/10-scale car onto a circuit it has never seen and have it map the track, plan a racing line and race it at speed — with no human input, a safety layer between every command and the motors, and every run observable live.",
     tools: ["ROS 2 Humble", "F1TENTH Gym", "WSL2", "Python (NumPy, SciPy, Numba)", "slam_toolbox", "AMCL", "FastAPI", "WebSockets", "FastF1", "Tailscale", "pytest"],
     outcome: "Map-then-race completes cleanly on all 24 tracks. Flying laps land within ~0.4 s of the planned lap time, self-built maps sit within ~7 cm of the true walls, and the racing line is 4–9% faster than the centreline.",
-    thumbnail: "",
-    gallery: [],
+    thumbnail: "assets/images/drive_live.jpeg",
+    gallery: [
+      "assets/images/drive_live.jpeg",
+      "assets/images/drive_laps.jpeg",
+      "assets/images/drive_power.jpeg",
+      "assets/images/drive_handling.jpeg",
+      "assets/images/drive_thermal.jpeg",
+    ],
     stats: [
       { value: 24, label: "real F1 circuit layouts, auto-recognised from live position" },
       { text: "24/24", label: "map-then-race runs clean: map lap, handover, flying laps, no crashes" },
